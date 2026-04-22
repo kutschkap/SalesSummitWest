@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Summit Midmarket West – Leinen los!</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════ */
+:root {
+  --ocean-deep:   #020e1c;
+  --ocean-mid:    #04203a;
+  --ocean-light:  #083358;
+  --wave:         #0a4a7a;
+  --brass:        #c8943a;
+  --brass2:       #e8b050;
+  --brass3:       #f5cc78;
+  --cream:        #f0e8d0;
+  --cream2:       #d8ccb0;
+  --rope:         #c4a060;
+  --sea-foam:     #7ad4d4;
+  --sea-bright:   #00ccdd;
+  --magenta:      #e20074;
+  --magenta2:     #ff1a8c;
+  --magenta-dim:  rgba(226,0,116,0.15);
+  --magenta-glow: rgba(226,0,116,0.35);
+  --red:          #cc2233;
+  --red2:         #ff3344;
+  --green:        #00bb66;
+  --green2:       #00ff88;
+  --white:        #f0f8ff;
+  --dim:          #0a2a44;
+  --muted:        #1a4a6a;
+  --text-dim:     #4a7a9a;
+  --cell:         #04305a;
+  --cell-hover:   #0a4a88;
+  --cell-done:    #020e1c;
+  --ff-serif:     'Playfair Display', Georgia, serif;
+  --ff-sans:      'Josefin Sans', sans-serif;
+  --ff-hud:       'Orbitron', sans-serif;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; }
+body { font-family:var(--ff-sans); background:var(--ocean-deep); color:var(--white); min-height:100vh; overflow-x:hidden; }
+
+/* ── OCEAN BG ── */
+.ocean-bg {
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background: linear-gradient(180deg,
+    #020a14 0%,
+    #031422 20%,
+    #042038 50%,
+    #031628 80%,
+    #020c1a 100%);
+}
+/* Magenta horizon glow */
+.ocean-bg::before {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:40%;
+  background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(226,0,116,0.08) 0%, transparent 70%);
+}
+/* Subtle wave lines */
+.ocean-bg::after {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0px, transparent 60px,
+      rgba(0,150,200,0.04) 60px, rgba(0,150,200,0.04) 61px
+    );
+}
+
+/* ── LOGOS ── */
+.logo-bar {
+  display:flex; align-items:center; justify-content:center;
+  gap:24px; margin-bottom:20px; flex-wrap:wrap;
+}
+.logo-ms {
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  padding:12px 18px; background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.1);
+}
+.logo-label {
+  font-size:9px; letter-spacing:3px; color:var(--text-dim); text-transform:uppercase;
+  font-family:var(--ff-sans);
+}
+.logo-sep {
+  width:1px; height:60px;
+  background:linear-gradient(to bottom, transparent, var(--magenta), transparent);
+}
+
+/* Magenta accents on cards */
+.info-card { border-left:3px solid var(--magenta) !important; }
+.pts-scale { border-color:rgba(226,0,116,0.35) !important; }
+.pts-scale-title { color:var(--magenta2) !important; }
+
+/* Magenta start button */
+.btn-magenta {
+  background:linear-gradient(135deg, #a80055, var(--magenta));
+  color:#fff;
+  box-shadow:0 4px 24px var(--magenta-glow), 0 1px 0 rgba(255,255,255,.15) inset;
+  letter-spacing:4px; font-size:13px; padding:15px 40px;
+}
+.btn-magenta:hover:not(:disabled) {
+  background:linear-gradient(135deg,var(--magenta),var(--magenta2));
+  box-shadow:0 8px 32px var(--magenta-glow), 0 0 60px rgba(226,0,116,.2);
+  transform:translateY(-2px);
+}
+.name-input:focus { border-color:var(--magenta) !important; box-shadow:0 0 16px rgba(226,0,116,.2) !important; }
+
+/* ── STARS / HORIZON GLOW ── */
+.horizon { position:fixed; bottom:0; left:0; right:0; height:30vh; z-index:1; pointer-events:none;
+  background:linear-gradient(to top, rgba(0,80,140,0.15), transparent); }
+.star-field { position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden; }
+.s { position:absolute; border-radius:50%; background:#fff; animation:tw linear infinite; }
+@keyframes tw { 0%,100%{opacity:.1;} 50%{opacity:.7;} }
+
+/* Floating particles (sea spray) */
+.spray { position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden; }
+.sp { position:absolute; border-radius:50%; background:rgba(180,230,255,0.4);
+  animation:spFloat linear infinite; }
+@keyframes spFloat {
+  0%   { opacity:0; transform:translateY(0) scale(0); }
+  15%  { opacity:.6; transform:scale(1); }
+  85%  { opacity:.2; }
+  100% { opacity:0; transform:translateY(-120px) scale(.3); }
+}
+
+/* ── APP ── */
+.app { position:relative; z-index:10; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:20px 16px; }
+
+/* ── SCREENS ── */
+.screen { display:none; flex-direction:column; align-items:center; width:100%; }
+.screen.on { display:flex; animation:sIn .4s ease; }
+@keyframes sIn { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:none;} }
+
+/* ═══════════════════════════════════════
+   START SCREEN – MARITIME
+═══════════════════════════════════════ */
+.ship-emblem {
+  font-size:64px; margin-bottom:12px;
+  animation:rock 4s ease-in-out infinite;
+  filter:drop-shadow(0 4px 20px rgba(0,150,220,.4));
+}
+@keyframes rock { 0%,100%{transform:rotate(-3deg);} 50%{transform:rotate(3deg);} }
+
+.event-badge {
+  font-family:var(--ff-sans); font-size:10px; letter-spacing:6px; text-transform:uppercase;
+  color:var(--brass2); border:1px solid rgba(200,148,58,.4);
+  padding:5px 20px; margin-bottom:16px;
+  background:rgba(200,148,58,.07);
+}
+
+.main-title {
+  font-family:var(--ff-serif); font-weight:900; font-style:italic;
+  font-size:clamp(28px,6vw,58px); line-height:1.1; text-align:center;
+  color:var(--cream); letter-spacing:-1px; margin-bottom:6px;
+  text-shadow: 0 2px 20px rgba(0,100,180,.5), 0 0 40px rgba(200,148,58,.2);
+}
+.main-title em { color:var(--brass2); font-style:normal; }
+
+.special-ed {
+  font-family:var(--ff-sans); font-size:12px; letter-spacing:5px;
+  color:var(--sea-foam); text-align:center; text-transform:uppercase;
+  margin-bottom:8px; opacity:.8;
+}
+
+/* Rope divider */
+.rope-div {
+  display:flex; align-items:center; gap:12px;
+  width:100%; max-width:560px; margin:16px auto;
+}
+.rope-div::before, .rope-div::after {
+  content:''; flex:1; height:2px;
+  background:repeating-linear-gradient(90deg, var(--rope) 0, var(--rope) 4px, transparent 4px, transparent 8px);
+}
+.rope-div span { font-size:18px; color:var(--brass2); }
+
+/* Info cards */
+.info-row { display:flex; gap:16px; margin-bottom:28px; flex-wrap:wrap; justify-content:center; width:100%; max-width:720px; }
+.info-card {
+  flex:1; min-width:180px;
+  background:rgba(4,32,58,.7); border:1px solid rgba(200,148,58,.25);
+  padding:16px 20px;
+}
+.info-card-icon { font-size:24px; margin-bottom:8px; }
+.info-card-title { font-family:var(--ff-sans); font-size:9px; letter-spacing:3px; color:var(--text-dim); margin-bottom:6px; text-transform:uppercase; }
+.info-card-val { font-family:var(--ff-hud); font-size:15px; color:var(--brass2); }
+.info-card-sub { font-size:11px; color:var(--cream2); margin-top:4px; line-height:1.5; }
+
+/* Point scale */
+.pts-scale {
+  width:100%; max-width:560px;
+  border:1px solid rgba(200,148,58,.3); background:rgba(4,32,58,.6);
+  padding:16px 20px; margin-bottom:28px;
+}
+.pts-scale-title { font-size:9px; letter-spacing:4px; color:var(--text-dim); margin-bottom:12px; text-transform:uppercase; text-align:center; }
+.pts-scale-row { display:flex; justify-content:space-between; align-items:center;
+  padding:5px 0; border-bottom:1px solid rgba(255,255,255,.05); font-size:13px; }
+.pts-scale-row:last-child { border:none; }
+.pts-scale-pts { font-family:var(--ff-hud); font-size:14px; }
+
+/* Name input */
+.name-section { width:100%; max-width:500px; margin-bottom:24px; }
+.name-label { font-size:10px; letter-spacing:4px; color:var(--text-dim); margin-bottom:8px; text-align:center; text-transform:uppercase; }
+.name-row { display:flex; gap:10px; }
+.name-input {
+  flex:1; background:rgba(4,32,58,.8); border:1px solid rgba(200,148,58,.4);
+  padding:13px 18px; color:var(--brass2); font-family:var(--ff-hud);
+  font-size:13px; letter-spacing:2px; outline:none; text-transform:uppercase;
+  transition:border-color .2s, box-shadow .2s;
+}
+.name-input:focus { border-color:var(--brass2); box-shadow:0 0 16px rgba(200,148,58,.2); }
+.name-input::placeholder { color:var(--muted); font-size:10px; letter-spacing:3px; }
+
+/* ── BUTTONS ── */
+.btn {
+  font-family:var(--ff-sans); font-weight:700; letter-spacing:3px;
+  text-transform:uppercase; border:none; cursor:pointer; padding:13px 32px;
+  font-size:11px; transition:all .18s; position:relative; overflow:hidden;
+}
+.btn::before { content:''; position:absolute; inset:0; background:linear-gradient(rgba(255,255,255,.12),transparent); pointer-events:none; }
+.btn-brass {
+  background:linear-gradient(135deg, #8a6020, var(--brass2));
+  color:#1a0a00;
+  box-shadow:0 4px 20px rgba(200,148,58,.4), 0 1px 0 rgba(255,255,255,.2) inset;
+}
+.btn-brass:hover:not(:disabled) { background:linear-gradient(135deg,var(--brass2),var(--brass3)); transform:translateY(-2px); box-shadow:0 8px 28px rgba(200,148,58,.5); }
+.btn-brass:active { transform:none; }
+.btn-brass:disabled { opacity:.3; cursor:not-allowed; transform:none !important; }
+.btn-ghost {
+  background:transparent; color:var(--sea-foam);
+  border:1px solid rgba(122,212,212,.3); font-size:10px; padding:10px 22px;
+}
+.btn-ghost:hover { border-color:var(--sea-foam); }
+
+/* Leaderboard */
+.lb-wrap { width:100%; max-width:640px; }
+.lb-head-title { font-family:var(--ff-serif); font-size:18px; color:var(--brass2); text-align:center; margin-bottom:14px; }
+.lb-row { display:grid; grid-template-columns:36px 1fr auto; align-items:center; gap:12px;
+  padding:11px 16px; margin-bottom:6px; border:1px solid rgba(200,148,58,.15);
+  background:rgba(4,32,58,.5); transition:transform .15s; position:relative; overflow:hidden; }
+.lb-row:hover { transform:translateX(4px); }
+.lb-row.g1 { border-color:rgba(200,148,58,.5); background:rgba(200,148,58,.08); }
+.lb-row.g2 { border-color:rgba(180,180,180,.3); }
+.lb-row.g3 { border-color:rgba(180,100,40,.3); }
+.lb-row.new { animation:newRow .5s ease; border-color:var(--sea-bright); }
+@keyframes newRow { from{opacity:0;transform:translateX(-20px);}to{opacity:1;transform:none;} }
+.lb-pos { font-family:var(--ff-hud); font-size:12px; text-align:center; }
+.g1 .lb-pos { color:var(--brass2); }
+.g2 .lb-pos { color:#ccc; }
+.g3 .lb-pos { color:#cd7f32; }
+.lb-name { font-weight:700; font-size:14px; }
+.lb-meta { font-size:10px; color:var(--text-dim); margin-top:2px; }
+.lb-sc { font-family:var(--ff-hud); font-size:14px; color:var(--brass2); text-align:right; }
+.lb-bar { position:absolute; bottom:0; left:0; height:2px; background:linear-gradient(90deg,var(--ocean-light),var(--sea-bright)); }
+.lb-empty { text-align:center; color:var(--text-dim); padding:24px; font-size:13px; letter-spacing:2px; }
+
+/* ═══════════════════════════════════════
+   GAME SCREEN
+═══════════════════════════════════════ */
+/* HUD */
+.hud {
+  width:100%; max-width:1100px;
+  display:grid; grid-template-columns:1fr auto 1fr;
+  align-items:center; gap:14px; margin-bottom:14px; flex-shrink:0;
+}
+.hud-box {
+  background:rgba(4,32,58,.7); border:1px solid rgba(200,148,58,.25); padding:10px 18px;
+}
+.hud-lbl { font-size:9px; letter-spacing:3px; color:var(--text-dim); margin-bottom:4px; text-transform:uppercase; }
+.hud-val { font-family:var(--ff-hud); font-size:clamp(14px,2.5vw,20px); color:var(--brass2); }
+.hud-center { text-align:center; }
+.hud-title-sm { font-family:var(--ff-serif); font-size:clamp(11px,1.5vw,15px); color:var(--cream2); font-style:italic; }
+.hud-right { text-align:right; }
+
+/* Progress bar */
+.prog-wrap { width:100%; max-width:1100px; margin-bottom:14px; }
+.prog-track { height:8px; background:rgba(0,0,0,.4); border:1px solid rgba(200,148,58,.2); position:relative; overflow:hidden; }
+.prog-fill { height:100%; background:linear-gradient(90deg,var(--wave),var(--sea-bright),var(--magenta)); transition:width .8s ease; }
+.prog-labels { display:flex; justify-content:space-between; font-size:10px; color:var(--text-dim); margin-top:4px; letter-spacing:1px; }
+
+/* BOARD */
+.board-wrap { width:100%; max-width:1100px; overflow-x:auto; margin-bottom:16px; }
+.board { display:grid; gap:4px; min-width:700px; }
+
+.cat-hdr {
+  background:linear-gradient(180deg, var(--ocean-light), var(--ocean-mid));
+  border:2px solid rgba(200,148,58,.5); padding:10px 6px;
+  text-align:center; font-family:var(--ff-sans); font-weight:700;
+  font-size:clamp(9px,1.1vw,12px); color:var(--brass2);
+  line-height:1.4; min-height:58px;
+  display:flex; align-items:center; justify-content:center;
+  text-transform:uppercase; letter-spacing:.5px;
+  text-shadow:0 0 8px rgba(200,148,58,.4);
+}
+
+.cell {
+  background:var(--cell); border:2px solid rgba(10,74,122,.8);
+  min-height:64px; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:all .15s; position:relative; overflow:hidden;
+}
+.cell::before { content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(200,148,58,.08),transparent); opacity:0; transition:opacity .15s; }
+.cell:hover:not(.done)::before { opacity:1; }
+.cell:hover:not(.done) { background:var(--cell-hover); border-color:var(--magenta);
+  box-shadow:0 0 20px var(--magenta-glow); }
+.cell:active:not(.done) { transform:scale(.97); }
+.cell.done { background:var(--cell-done); cursor:default; border-color:rgba(255,255,255,.04); }
+/* board done cells */
+.cell.done .cell-val { opacity:0; }
+.cell-val {
+  font-family:var(--ff-hud); font-size:clamp(11px,1.6vw,18px); color:var(--brass2);
+  text-shadow:0 0 8px rgba(200,148,58,.5); transition:transform .15s;
+  font-weight:700;
+}
+.cell:hover:not(.done) .cell-val { transform:scale(1.08); }
+
+/* ═══════════════════════════════════════
+   MODAL
+═══════════════════════════════════════ */
+.overlay { position:fixed; inset:0; z-index:100;
+  background:rgba(0,10,25,.88); backdrop-filter:blur(4px);
+  display:none; align-items:center; justify-content:center; padding:20px; }
+.overlay.on { display:flex; animation:fadeIn .2s ease; }
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+.modal {
+  background:linear-gradient(160deg, var(--ocean-mid), var(--ocean-deep));
+  border:2px solid rgba(200,148,58,.5);
+  max-width:680px; width:100%; padding:30px;
+  position:relative; max-height:90vh; overflow-y:auto;
+  box-shadow:0 0 60px rgba(200,148,58,.2), 0 0 120px rgba(0,80,150,.3);
+  animation:modalIn .3s cubic-bezier(.22,1,.36,1);
+}
+@keyframes modalIn { from{transform:scale(.88) translateY(20px);} to{transform:none;} }
+
+/* Corner anchors */
+.modal::before, .modal::after { content:'⚓'; position:absolute; font-size:14px; color:rgba(200,148,58,.4); }
+.modal::before { top:10px; left:12px; }
+.modal::after  { bottom:10px; right:12px; }
+
+.m-cat { font-size:9px; letter-spacing:4px; color:var(--sea-foam); text-transform:uppercase; margin-bottom:6px; }
+.m-val { font-family:var(--ff-hud); font-size:clamp(22px,4vw,36px); color:var(--magenta2);
+  text-shadow:0 0 16px var(--magenta-glow); margin-bottom:18px; }
+.m-q { font-family:var(--ff-serif); font-size:clamp(15px,2.2vw,20px); font-weight:700;
+  line-height:1.5; color:var(--cream); margin-bottom:22px; }
+
+/* Answer grid */
+.a-grid { display:grid; gap:10px; margin-bottom:14px; }
+.a-grid-4 { grid-template-columns:1fr 1fr; }
+.a-grid-2 { grid-template-columns:1fr 1fr; }
+.a-grid-1 { grid-template-columns:1fr; }
+
+.a-btn {
+  background:rgba(4,48,90,.7); border:1px solid rgba(200,148,58,.2);
+  padding:13px 16px; cursor:pointer; color:var(--cream);
+  font-family:var(--ff-sans); font-size:13px; font-weight:600;
+  text-align:left; transition:all .15s;
+  display:flex; align-items:flex-start; gap:10px;
+}
+.a-key { font-family:var(--ff-hud); font-size:9px; color:var(--brass); flex-shrink:0; padding-top:2px; min-width:16px; }
+.a-btn:hover:not(:disabled) { border-color:var(--brass2); background:rgba(200,148,58,.1); }
+.a-btn:hover:not(:disabled) .a-key { color:var(--brass2); }
+.a-btn.ok  { border-color:var(--green2); background:rgba(0,187,102,.1); color:#aaffcc; }
+.a-btn.ok  .a-key { color:var(--green2); }
+.a-btn.bad { border-color:var(--red2);   background:rgba(204,34,51,.1);  color:#ffaaaa; }
+.a-btn.bad .a-key { color:var(--red2); }
+.a-btn:disabled { cursor:default; }
+
+/* TF */
+.tf-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+.tf-btn {
+  font-family:var(--ff-sans); font-weight:700; font-size:14px; letter-spacing:2px;
+  padding:18px; text-align:center; border:2px solid; cursor:pointer; transition:all .15s;
+  background:rgba(4,32,58,.8);
+}
+.tf-t { border-color:var(--green2); color:var(--green2); }
+.tf-f { border-color:var(--red2); color:var(--red2); }
+.tf-btn:hover:not(:disabled) { transform:scale(1.03); }
+.tf-btn.ok  { background:rgba(0,187,102,.15); }
+.tf-btn.bad { background:rgba(204,34,51,.12); }
+.tf-btn:disabled { cursor:default; transform:none; opacity:.6; }
+
+/* Word guess */
+.w-disp { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:12px 0 16px; }
+.wl { width:36px; height:44px; border-bottom:2px solid var(--brass); display:flex; align-items:flex-end;
+  justify-content:center; padding-bottom:4px; font-family:var(--ff-hud); font-size:16px;
+  color:var(--brass2); transition:all .2s; }
+.wl.hit { border-color:var(--green2); color:var(--green2); animation:lPop .3s ease; }
+.wl.bad-r { border-color:var(--red2); color:var(--red2); }
+.wl.sp { border:none; width:12px; }
+@keyframes lPop { from{transform:scale(1.5);} to{transform:scale(1);} }
+.alpha-wrap { display:flex; flex-wrap:wrap; gap:5px; justify-content:center; margin-bottom:12px; }
+.al-b { font-family:var(--ff-hud); font-size:9px; width:30px; height:30px;
+  border:1px solid rgba(200,148,58,.25); background:rgba(4,32,58,.7); color:var(--cream);
+  cursor:pointer; transition:all .1s; display:flex; align-items:center; justify-content:center; }
+.al-b:hover:not(:disabled) { border-color:var(--brass2); color:var(--brass2); }
+.al-b.al-h { border-color:var(--green2); color:var(--green2); background:rgba(0,187,102,.1); }
+.al-b.al-m { border-color:var(--red2); color:var(--red2); opacity:.4; }
+.al-b:disabled { cursor:default; }
+.w-lives { font-size:11px; letter-spacing:2px; color:var(--text-dim); text-align:center; margin-bottom:8px; }
+.w-lives span { color:var(--red2); }
+
+/* Feedback */
+.fb { width:100%; border:1px solid; padding:12px 16px;
+  font-family:var(--ff-sans); font-size:13px; font-weight:600;
+  display:none; align-items:center; gap:10px; margin-bottom:14px; animation:fbIn .22s ease; }
+.fb.on { display:flex; }
+.fb.ok  { border-color:var(--green2); background:rgba(0,187,102,.08); color:#88ffbb; }
+.fb.bad { border-color:var(--red2);   background:rgba(204,34,51,.08);  color:#ffaaaa; }
+@keyframes fbIn { from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;} }
+
+.modal-next { margin-top:8px; font-family:var(--ff-sans); font-weight:700; font-size:10px;
+  letter-spacing:2px; background:transparent; border:1px solid rgba(200,148,58,.3);
+  color:var(--text-dim); padding:10px 22px; cursor:pointer; transition:all .15s; text-transform:uppercase; }
+.modal-next:hover { border-color:var(--brass2); color:var(--brass2); }
+
+/* Money popup */
+.money-pop { position:fixed; pointer-events:none; z-index:500;
+  font-family:var(--ff-hud); font-size:20px;
+  animation:mUp 1.2s ease forwards; }
+.money-pop.win { color:var(--brass2); text-shadow:0 0 10px rgba(200,148,58,.5); }
+.money-pop.lose { color:var(--red2); }
+@keyframes mUp { 0%{opacity:1;transform:translateY(0);}70%{opacity:1;transform:translateY(-70px);}100%{opacity:0;transform:translateY(-100px);} }
+
+/* ═══════════════════════════════════════
+   RESULT SCREEN
+═══════════════════════════════════════ */
+.result-anchor { font-size:56px; animation:rock 3s ease-in-out infinite; margin-bottom:8px; }
+.result-board { text-align:center; margin-bottom:24px; }
+.result-title { font-family:var(--ff-serif); font-size:clamp(22px,4vw,38px); color:var(--brass2);
+  margin-bottom:8px; text-shadow:0 0 20px rgba(200,148,58,.3); }
+.result-amount { font-family:var(--ff-hud); font-size:clamp(30px,6vw,52px); color:var(--brass2);
+  text-shadow:0 0 30px rgba(200,148,58,.5); margin-bottom:4px; }
+.result-goal { font-size:12px; letter-spacing:3px; color:var(--text-dim); }
+.result-pts { display:inline-block; font-family:var(--ff-hud); font-size:clamp(14px,2.5vw,20px);
+  padding:10px 28px; border:2px solid; letter-spacing:2px; margin:16px 0; }
+.rp-full { border-color:var(--brass2); color:var(--brass2); background:rgba(200,148,58,.08);
+  box-shadow:0 0 30px rgba(200,148,58,.2); }
+.rp-good { border-color:var(--sea-bright); color:var(--sea-bright); }
+.rp-low  { border-color:var(--red2); color:var(--red2); }
+
+.result-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px;
+  width:100%; max-width:600px; margin-bottom:24px; }
+.rs { background:rgba(4,32,58,.6); border:1px solid rgba(200,148,58,.2); padding:14px; text-align:center; }
+.rs-num { font-family:var(--ff-hud); font-size:24px; margin-bottom:4px; }
+.rs-lbl { font-size:10px; letter-spacing:2px; color:var(--text-dim); }
+
+.breakdown { width:100%; max-width:600px; margin-bottom:24px; }
+.bd-row { display:flex; justify-content:space-between; align-items:center;
+  padding:8px 14px; border-bottom:1px solid rgba(255,255,255,.05);
+  font-size:13px; font-family:var(--ff-sans); }
+.bd-row:last-child { border:none; }
+.bd-cat { color:var(--text-dim); }
+.bd-val { font-family:var(--ff-hud); font-size:11px; color:var(--brass2); }
+
+/* Rope divider in result */
+.rope-sm { height:1px; width:100%; max-width:600px;
+  background:repeating-linear-gradient(90deg,var(--rope) 0,var(--rope) 4px,transparent 4px,transparent 8px);
+  margin:16px 0; }
+
+@media(max-width:580px){
+  .a-grid-4 { grid-template-columns:1fr; }
+  .tf-grid  { grid-template-columns:1fr; }
+  .result-stats { grid-template-columns:1fr 1fr; }
+  .hud { grid-template-columns:1fr; }
+  .info-row .info-card { min-width:140px; }
+}
+</style>
+</head>
+<body>
+
+<!-- BG -->
+<div class="ocean-bg"></div>
+<div class="horizon"></div>
+<div class="star-field" id="starField"></div>
+<div class="spray" id="spray"></div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal">
+    <div class="m-cat" id="mCat">—</div>
+    <div class="m-val" id="mVal">—</div>
+    <div class="m-q"   id="mQ">—</div>
+
+    <div id="zone-mc"><div class="a-grid" id="aGrid"></div></div>
+    <div id="zone-tf" style="display:none">
+      <div class="tf-grid">
+        <button class="tf-btn tf-t" id="tfT" onclick="pickTF(true)">✓ RICHTIG</button>
+        <button class="tf-btn tf-f" id="tfF" onclick="pickTF(false)">✗ FALSCH</button>
+      </div>
+    </div>
+    <div id="zone-word" style="display:none">
+      <div class="w-lives">VERSUCHE: <span id="wLives">6</span> ❤</div>
+      <div class="w-disp" id="wDisp"></div>
+      <div class="alpha-wrap" id="alphaWrap"></div>
+    </div>
+
+    <div class="fb" id="fb"><span id="fbI"></span><span id="fbT"></span></div>
+    <button class="modal-next" id="modalNext" style="display:none" onclick="closeModal()">WEITER ⚓</button>
+  </div>
+</div>
+
+<div class="app">
+
+<!-- ═══════ START ═══════ -->
+<div class="screen on" id="s-start">
+
+  <!-- LOGOS -->
+  <div class="logo-bar" style="margin-top:12px;">
+    <!-- Microsoft 4-square SVG -->
+    <div class="logo-ms">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2"  y="2"  width="27" height="27" fill="#F35325"/>
+        <rect x="35" y="2"  width="27" height="27" fill="#81BC06"/>
+        <rect x="2"  y="35" width="27" height="27" fill="#05A6F0"/>
+        <rect x="35" y="35" width="27" height="27" fill="#FFBA08"/>
+      </svg>
+      <div class="logo-label">Microsoft</div>
+    </div>
+
+    <div class="logo-sep"></div>
+
+    <!-- Anchor + title center -->
+    <div style="text-align:center;">
+      <div class="ship-emblem" style="font-size:42px;margin-bottom:4px;">⚓</div>
+      <div class="event-badge" style="margin-bottom:0;">Sales Summit · Midmarket West</div>
+    </div>
+  </div>
+
+  <div class="main-title">Leinen <em>los!</em></div>
+  <div class="special-ed">Jeopardy Special Edition · Midmarket West</div>
+
+  <div class="rope-div"><span>⚓</span><span>🧭</span><span>⚓</span></div>
+
+  <div class="info-row">
+    <div class="info-card">
+      <div class="info-card-icon">🗺️</div>
+      <div class="info-card-title">7 Kategorien</div>
+      <div class="info-card-sub">Security · CSP Lizenzen · Copilot · Teams · Modern Work · Azure · Dienstleistung</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">💰</div>
+      <div class="info-card-title">Spielmodus</div>
+      <div class="info-card-sub">100 · 200 · 300 · 400 · 500 €<br>Falsch = Abzug!</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">🏆</div>
+      <div class="info-card-title">Ziel</div>
+      <div class="info-card-sub"><strong style="color:var(--magenta2);font-size:16px;">6.000 €</strong><br>= 8 Punkte</div>
+    </div>
+  </div>
+
+  <div class="pts-scale">
+    <div class="pts-scale-title">Punktesystem</div>
+    <div class="pts-scale-row"><span style="color:var(--text-dim)">Unter 400 €</span><span class="pts-scale-pts" style="color:var(--red2)">0 Punkte</span></div>
+    <div class="pts-scale-row"><span>400 – 999 €</span><span class="pts-scale-pts" style="color:var(--sea-foam)">1 Punkt</span></div>
+    <div class="pts-scale-row"><span>1.000 – 1.999 €</span><span class="pts-scale-pts" style="color:var(--sea-foam)">2 Punkte</span></div>
+    <div class="pts-scale-row"><span>2.000 – 2.999 €</span><span class="pts-scale-pts" style="color:var(--sea-foam)">3 Punkte</span></div>
+    <div class="pts-scale-row"><span>3.000 – 3.749 €</span><span class="pts-scale-pts" style="color:var(--sea-bright)">4 Punkte</span></div>
+    <div class="pts-scale-row"><span>3.750 – 4.499 €</span><span class="pts-scale-pts" style="color:var(--sea-bright)">5 Punkte</span></div>
+    <div class="pts-scale-row"><span>4.500 – 5.249 €</span><span class="pts-scale-pts" style="color:var(--sea-bright)">6 Punkte</span></div>
+    <div class="pts-scale-row"><span>5.250 – 5.999 €</span><span class="pts-scale-pts" style="color:var(--brass2)">7 Punkte</span></div>
+    <div class="pts-scale-row"><span style="color:var(--magenta2);font-weight:700;">6.000 € ⭐</span><span class="pts-scale-pts" style="color:var(--magenta2)">8 Punkte</span></div>
+  </div>
+
+  <div class="name-section">
+    <div class="name-label">Teamname</div>
+    <div class="name-row">
+      <input class="name-input" id="startName" placeholder="TEAMNAME EINGEBEN" maxlength="24"
+        onkeydown="if(event.key==='Enter') startGame()">
+      <button class="btn btn-magenta" onclick="startGame()">▶ START</button>
+    </div>
+  </div>
+
+  <div class="rope-div" style="max-width:640px;"><span>🧭</span></div>
+
+  <div class="lb-wrap">
+    <div class="lb-head-title">⚓ Hall of Fame</div>
+    <div id="lb-start"></div>
+  </div>
+  <button class="btn btn-ghost" style="margin-top:12px;" onclick="clearHall()">Reset Scores</button>
+</div>
+
+<!-- ═══════ GAME ═══════ -->
+<div class="screen" id="s-game">
+  <div class="hud">
+    <div class="hud-box">
+      <div class="hud-lbl">Team</div>
+      <div class="hud-val" id="hudTeam" style="font-size:13px;">—</div>
+    </div>
+    <div class="hud-box hud-center">
+      <div class="hud-title-sm">Jeopardy Special Edition</div>
+      <div class="hud-lbl" style="margin-top:2px;">Midmarket West</div>
+    </div>
+    <div class="hud-box hud-right">
+      <div class="hud-lbl">Kontostand</div>
+      <div class="hud-val" id="hudScore">0 €</div>
+    </div>
+  </div>
+
+  <div class="prog-wrap">
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-labels">
+      <span>0 €</span>
+      <span id="progCur">0 €  →  0 Punkte</span>
+      <span>6.000 €</span>
+    </div>
+  </div>
+
+  <div class="board-wrap">
+    <div class="board" id="board"></div>
+  </div>
+
+  <button class="btn btn-ghost" style="font-size:9px;padding:8px 16px;" onclick="finishEarly()">Abschließen ⚓</button>
+</div>
+
+<!-- ═══════ RESULT ═══════ -->
+<div class="screen" id="s-result">
+  <div class="result-anchor">⚓</div>
+  <div class="result-board">
+    <div class="result-title" id="rTitle">Spielende</div>
+    <div class="result-amount" id="rAmount">0 €</div>
+    <div class="result-goal" id="rGoal">—</div>
+    <div class="result-pts" id="rPts">— Punkte</div>
+  </div>
+
+  <div class="result-stats">
+    <div class="rs"><div class="rs-num" id="rsOk" style="color:var(--green2)">0</div><div class="rs-lbl">Richtig</div></div>
+    <div class="rs"><div class="rs-num" id="rsBad" style="color:var(--red2)">0</div><div class="rs-lbl">Falsch</div></div>
+    <div class="rs"><div class="rs-num" id="rsMax" style="color:var(--brass2)">0 €</div><div class="rs-lbl">Höchststand</div></div>
+  </div>
+
+  <div class="breakdown" id="rBreakdown"></div>
+
+  <div class="rope-sm"></div>
+
+  <div class="name-section">
+    <div class="name-label">Eintragen in Highscore</div>
+    <div class="name-row">
+      <input class="name-input" id="resultName" placeholder="TEAMNAME" maxlength="24"
+             onkeydown="if(event.key==='Enter') submitScore()" style="flex:1;">
+      <button class="btn btn-brass" style="font-size:10px;padding:12px 18px;" onclick="submitScore()">OK ▶</button>
+    </div>
+  </div>
+
+  <div class="lb-wrap" style="margin-top:8px;">
+    <div class="lb-head-title">⚓ Hall of Fame</div>
+    <div id="lb-result"></div>
+  </div>
+
+  <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;justify-content:center;">
+    <button class="btn btn-brass" onclick="startGame()">Nochmal spielen</button>
+    <button class="btn btn-ghost" onclick="goStart()">Hauptmenü</button>
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<script>
+// ═══════════════════════════════════════════
+//  AMBIENT FX
+// ═══════════════════════════════════════════
+(()=>{
+  // Stars
+  const sf=document.getElementById('starField');
+  for(let i=0;i<80;i++){
+    const s=document.createElement('div'); s.className='s';
+    const sz=Math.random()*1.5+.3;
+    Object.assign(s.style,{width:sz+'px',height:sz+'px',
+      left:Math.random()*100+'%',top:Math.random()*60+'%',
+      animationDuration:(Math.random()*5+3)+'s',animationDelay:(Math.random()*7)+'s'});
+    sf.appendChild(s);
+  }
+  // Spray
+  const sp=document.getElementById('spray');
+  for(let i=0;i<20;i++){
+    const d=document.createElement('div'); d.className='sp';
+    const sz=Math.random()*4+1;
+    Object.assign(d.style,{width:sz+'px',height:sz+'px',
+      left:Math.random()*100+'%',top:(60+Math.random()*40)+'%',
+      animationDuration:(Math.random()*8+6)+'s',animationDelay:(Math.random()*10)+'s'});
+    sp.appendChild(d);
+  }
+})();
+
+// ═══════════════════════════════════════════
+//  CATEGORIES & QUESTIONS
+// ═══════════════════════════════════════════
+const CATS = [
+  { id:'sec',  label:'🔒 Security' },
+  { id:'liz',  label:'📋 CSP Lizenzen' },
+  { id:'cop',  label:'🤖 Copilot' },
+  { id:'tea',  label:'📞 Teams Telefonie' },
+  { id:'mw',   label:'💼 Modern Work' },
+  { id:'az',   label:'☁️ Azure' },
+  { id:'dl',   label:'🛠️ Dienstleistung' },
+];
+const VALS = [100,200,300,400,500];
+
+// ⚠️  Answer patterns deliberately mixed:
+//  – correct answer rotated across A/B/C/D positions
+//  – answer lengths deliberately varied (correct is NOT always longest)
+const QS = {
+  sec: [
+    { v:100, type:'tf',
+      q:'Microsoft Defender for Business richtet sich an Unternehmen mit bis zu 300 Usern.',
+      correct:true,
+      ex:'Richtig – Defender for Business steckt in M365 Business Premium und bringt EDR für KMU.' },
+
+    { v:200, type:'mc',
+      q:'Was beschreibt "Conditional Access" in Microsoft Entra ID am besten?',
+      a:['Ein VPN-Dienst für Homeoffice-Nutzer',
+         'Richtlinien, die Zugriff je nach Gerät, Standort und Risiko erlauben oder sperren',
+         'Automatische Patch-Verteilung auf Endgeräte',
+         'Eine Firewall zwischen Azure und On-Premises'],
+      c:1, ex:'Conditional Access ist das Zero-Trust-Werkzeug: Wer darf von wo mit welchem Gerät auf was zugreifen?' },
+
+    { v:300, type:'mc',
+      q:'Welche Aussage zu Microsoft Defender XDR ist korrekt?',
+      a:['Es stoppt laufende Angriffe automatisch per Automatic Attack Disruption',
+         'Es ist ausschließlich für E-Mail-Sicherheit zuständig',
+         'Es ersetzt vollständig Microsoft Sentinel',
+         'Es läuft nur on-premises'],
+      c:0, ex:'Automatic Attack Disruption in Defender XDR isoliert kompromittierte Geräte in Echtzeit – ohne Admin-Eingriff.' },
+
+    { v:400, type:'mc',
+      q:'Was ist der wesentliche Unterschied zwischen Microsoft Sentinel und Defender XDR?',
+      a:['Sentinel kann nur on-premises Logs analysieren',
+         'Defender XDR ist teurer als Sentinel',
+         'Sentinel ist ein SIEM/SOAR für Logs aller Quellen; Defender XDR korreliert Microsoft-eigene Signale',
+         'Beide Produkte sind identisch'],
+      c:2, ex:'Sentinel verarbeitet Logs aus beliebigen Quellen inkl. Drittanbieter; Defender XDR fokussiert auf das Microsoft-Ökosystem.' },
+
+    { v:500, type:'word',
+      clue:'Sicherheitsmodell: Niemals vertrauen, immer verifizieren (englisch, 9 Buchstaben zusammengeschrieben)',
+      word:'ZEROTRUST',
+      ex:'Zero Trust ist das Kernprinzip hinter Microsofts gesamter Security-Architektur.' },
+  ],
+
+  liz: [
+    { v:100, type:'tf',
+      q:'NCE steht für "New Commerce Experience" – Microsofts aktuelles Lizenz-Framework im CSP-Kanal.',
+      correct:true,
+      ex:'Richtig – NCE gilt seit 2022 als Standard für alle Microsoft-Lizenzen über Partner.' },
+
+    { v:200, type:'mc',
+      q:'Ein Kunde mit NCE Annual (monatliche Zahlung) möchte nach 5 Monaten kündigen. Was passiert?',
+      a:['Er zahlt die restlichen 7 Monate als Stornierungsgebühr',
+         'Kündigung ist jederzeit kostenfrei',
+         'Microsoft erstattet anteilig',
+         'Der Partner trägt die Differenz'],
+      c:0, ex:'Annual Commitment = 12 Monate Bindung. Die Zahlungsmodalität (monatlich vs. jährlich) ändert das nicht.' },
+
+    { v:300, type:'mc',
+      q:'Wofür wird eine "Device SL" (Shared Device License) typischerweise eingesetzt?',
+      a:['Für Freelancer mit mehreren eigenen Geräten',
+         'Ausschließlich für Azure Virtual Desktop',
+         'Für günstigere Einzellizenzen im Home-Office',
+         'Für Schichtbetrieb-Geräte, die mehrere Nutzer teilen (Pflege, Produktion, Kiosk)'],
+      c:3, ex:'Device SL bindet die Lizenz ans Gerät statt an eine Person – ideal wenn viele Nutzer dasselbe Terminal nutzen.' },
+
+    { v:400, type:'mc',
+      q:'Wie hoch ist der Preisaufschlag einer NCE Monthly Subscription gegenüber Annual?',
+      a:['5 %',
+         'Ca. 20 %',
+         'Keiner – der Preis ist identisch',
+         'Ca. 35 %'],
+      c:1, ex:'Der ~20 % Aufschlag auf Monthly vs. Annual ist ein starkes Verkaufsargument für den Annual Commitment.' },
+
+    { v:500, type:'mc',
+      q:'Ab wann sind M365 Business-Pläne (Basic/Standard/Premium) nicht mehr buchbar?',
+      a:['Ab 251 Usern',
+         'Keine Grenze – Business-Pläne sind unbegrenzt verfügbar',
+         'Ab 501 Usern',
+         'Ab 301 Usern'],
+      c:3, ex:'Business-Pläne sind auf max. 300 User gedeckelt. Ab 301 User sind Enterprise-Pläne (E3/E5) notwendig.' },
+  ],
+
+  cop: [
+    { v:100, type:'tf',
+      q:'Microsoft 365 Copilot ist ohne zusätzlichen Kauf bereits in M365 Business Standard enthalten.',
+      correct:false,
+      ex:'Falsch – Copilot kostet ca. 30 €/User/Monat als separates Add-on zusätzlich zur Basislizenz.' },
+
+    { v:200, type:'mc',
+      q:'Was kann Copilot in Word, das klassische Textverarbeitung nicht bietet?',
+      a:['Rechtschreibkorrektur per KI',
+         'Tabellen automatisch formatieren',
+         'Dokumente aus einem Prompt erstellen und bestehende Texte zusammenfassen oder umformulieren',
+         'PDF-Dateien importieren'],
+      c:2, ex:'Copilot generiert Entwürfe, fasst Dokumente zusammen und schreibt Texte auf Knopfdruck um.' },
+
+    { v:300, type:'mc',
+      q:'Was ist Copilot Studio und wofür nutzen Unternehmen es?',
+      a:['Microsofts eigenes KI-Trainingsportal für große Sprachmodelle',
+         'Low-Code-Plattform für eigene KI-Agenten auf Basis von Unternehmensdaten',
+         'Eine Erweiterung des Azure OpenAI Playgrounds',
+         'Teams-App-Marktplatz für Copilot-Plugins'],
+      c:1, ex:'Copilot Studio erlaubt den Bau eigener Agenten ohne tiefe Programmierung – z.B. ein interner HR- oder Support-Bot.' },
+
+    { v:400, type:'mc',
+      q:'Welche Basislizenz ist zwingend notwendig, um M365 Copilot buchen zu können?',
+      a:['Office 365 E1 reicht aus',
+         'M365 E3, E5, Business Standard oder Business Premium',
+         'Das Copilot-Add-on ist standalone buchbar ohne Basis',
+         'Azure OpenAI Subscription ist ausreichend'],
+      c:1, ex:'Ohne berechtigte Basislizenz ist Copilot nicht buchbar. E1 und F-Pläne sind nicht berechtigt.' },
+
+    { v:500, type:'word',
+      clue:'Microsofts KI-Assistent integriert in alle M365-Apps (7 Buchstaben)',
+      word:'COPILOT',
+      ex:'Microsoft 365 Copilot basiert auf OpenAI GPT-4 und ist in Word, Excel, Teams und mehr eingebettet.' },
+  ],
+
+  tea: [
+    { v:100, type:'tf',
+      q:'Beim Microsoft Calling Plan ist Microsoft selbst der Carrier – der Kunde braucht keinen eigenen SBC.',
+      correct:true,
+      ex:'Richtig – beim Calling Plan übernimmt Microsoft die PSTN-Anbindung. Direct Routing und Operator Connect nutzen externe Carrier.' },
+
+    { v:200, type:'mc',
+      q:'Was ist der Kernunterschied zwischen Operator Connect und Direct Routing?',
+      a:['Operator Connect erfordert einen eigenen SBC; Direct Routing nicht',
+         'Beide Modelle sind technisch identisch',
+         'Operator Connect nutzt einen zertifizierten Carrier ohne eigenen SBC; Direct Routing setzt einen eigenen SBC voraus',
+         'Direct Routing ist günstiger als Operator Connect'],
+      c:2, ex:'Operator Connect vereinfacht die Anbindung – Telekom als zertifizierter Carrier übernimmt die Infrastruktur.' },
+
+    { v:300, type:'mc',
+      q:'Was ist das Alleinstellungsmerkmal von Teams Phone Mobile?',
+      a:['Teams läuft auch ohne Internetverbindung',
+         'Günstigerer Calling Plan für Mobilgeräte',
+         'Separate App nur für iOS und Android',
+         'Die SIM-Rufnummer des Nutzers ist identisch mit der Teams-Nummer – ein Gerät, eine Nummer'],
+      c:3, ex:'Teams Phone Mobile: SIM und Teams-Rufnummer sind dieselbe – Anrufe landen gleichzeitig in Teams und auf dem Handy.' },
+
+    { v:400, type:'mc',
+      q:'Was muss im SBC für die Notruffähigkeit (ELIN) in Direct-Routing-Umgebungen konfiguriert sein?',
+      a:['Eine separate Notfall-SIM-Karte',
+         'Mapping zwischen interner Rufnummer und Emergency Location Identification Number',
+         'Azure AD Premium P2',
+         'Teams Phone Mobile Lizenz für alle Nutzer'],
+      c:1, ex:'ELIN-Mapping im SBC ist Pflicht: Notrufzentralen müssen den genauen Standort des Anrufers zurückverfolgen können.' },
+
+    { v:500, type:'word',
+      clue:'Gerät, das Teams mit dem klassischen Telefonnetz verbindet (Abk., 3 Buchstaben)',
+      word:'SBC',
+      ex:'SBC = Session Border Controller – bindet das IP-Netz (Teams) an das klassische PSTN an.' },
+  ],
+
+  mw: [
+    { v:100, type:'tf',
+      q:'Microsoft SharePoint ist in erster Linie ein E-Mail-Dienst.',
+      correct:false,
+      ex:'Falsch – SharePoint ist eine Intranet- und Dokumentenmanagement-Plattform, kein E-Mail-Dienst.' },
+
+    { v:200, type:'mc',
+      q:'Welche Aussage zu Microsoft Teams gegenüber klassischen Videokonferenzsystemen stimmt?',
+      a:['Teams ist ausschließlich für interne Kommunikation nutzbar',
+         'Teams bietet lediglich bessere Videoqualität als Konkurrenzlösungen',
+         'Teams ist eine vollständige Kollaborationsplattform mit Chat, Dateien, Apps und Telefonie – nicht nur Video',
+         'Teams ist immer günstiger als Alternativen'],
+      c:2, ex:'Teams vereint Chat, Meetings, Dateien, Apps und Telefonie – das ist die zentrale "One Stop"-Botschaft.' },
+
+    { v:300, type:'mc',
+      q:'Was ist Microsoft Viva?',
+      a:['Microsofts CRM-Plattform für den Vertrieb',
+         'Eine Azure-Monitoring-Lösung',
+         'Employee Experience Platform für Engagement, Lernen und Wellbeing – integriert in Teams',
+         'Ein Reporting-Tool für Power BI'],
+      c:2, ex:'Microsoft Viva bündelt Onboarding, Learning und Mitarbeiter-Insights direkt in Teams.' },
+
+    { v:400, type:'mc',
+      q:'Was unterscheidet Microsoft Loop von herkömmlicher Dokumentenarbeit?',
+      a:['Loop ersetzt SharePoint vollständig',
+         'Loop ermöglicht nur Offline-Bearbeitung',
+         'Loop-Komponenten (Tabellen, Aufgaben) aktualisieren sich in Teams, Outlook und OneNote synchron in Echtzeit',
+         'Loop ist ausschließlich für mobile Geräte verfügbar'],
+      c:2, ex:'Loop-Komponenten existieren gleichzeitig in mehreren Apps und synchronisieren sich überall live.' },
+
+    { v:500, type:'mc',
+      q:'Was ist Microsoft Places und warum ist es für hybride Teams relevant?',
+      a:['Ein Kartendienst für Außendienstmitarbeiter',
+         'Intelligentes Büroraummanagement: Desk-Buchung, Raumbuchung und Anwesenheitsübersicht für hybrides Arbeiten',
+         'Ein Azure-IoT-Tool für Gebäudeautomation',
+         'Eine Teams-Funktion zur GPS-Standortfreigabe'],
+      c:1, ex:'Microsoft Places optimiert hybrides Arbeiten: Wer kommt wann? Welcher Raum ist frei? Alles koordiniert in Teams.' },
+  ],
+
+  az: [
+    { v:100, type:'tf',
+      q:'Azure ist ausschließlich für Großkonzerne geeignet – KMU setzen besser auf AWS.',
+      correct:false,
+      ex:'Falsch – Azure skaliert für alle Unternehmensgrößen; in Deutschland besonders attraktiv durch lokale Datacenter.' },
+
+    { v:200, type:'mc',
+      q:'Was beschreibt den Unterschied zwischen IaaS, PaaS und SaaS am besten?',
+      a:['PaaS ist immer teurer als IaaS',
+         'SaaS erfordert eigene Server-Hardware',
+         'Alle drei sind technisch identisch',
+         'IaaS = virtuelle Infrastruktur, PaaS = Entwicklungsplattform, SaaS = fertige Anwendung (z.B. M365)'],
+      c:3, ex:'Merkhilfe: IaaS = Lift & Shift, PaaS = DevOps, SaaS = Endnutzeranwendungen wie M365 oder Dynamics.' },
+
+    { v:300, type:'mc',
+      q:'Was ist eine Azure Landing Zone?',
+      a:['Vorkonfigurierte Azure-Umgebung mit Governance, Netzwerk und Security nach Cloud Adoption Framework',
+         'Der erste Testbereich für neue Azure-Abonnements',
+         'Ein Azure Free Tier für Startups',
+         'Eine Sandbox für Entwickler ohne Produktionszugang'],
+      c:0, ex:'Landing Zones beschleunigen Cloud-Migrationen: Governance, Policies und Netzwerk sind bereits korrekt vorkonfiguriert.' },
+
+    { v:400, type:'mc',
+      q:'Was ist Azure Arc und welches Kundenproblem löst es?',
+      a:['Ein Azure-Backup-Service für VMs',
+         'Ein VPN-Gateway zwischen On-Premises und Azure',
+         'Azure Arc ermöglicht einheitliches Management von On-Premises-Servern und Multi-Cloud-Umgebungen über eine Konsole',
+         'Ein Load Balancer für hybride Workloads'],
+      c:2, ex:'Arc löst das Hybrid-/Multi-Cloud-Problem: Server bei AWS, GCP oder lokal werden über das Azure-Portal einheitlich verwaltet.' },
+
+    { v:500, type:'word',
+      clue:'Microsofts cloudbasierter Identitätsdienst – seit 2023 umbenannt (5 Buchstaben)',
+      word:'ENTRA',
+      ex:'Microsoft Entra ID ist der neue Name für Azure Active Directory – zentral für Zero Trust und Identitätsmanagement.' },
+  ],
+
+  dl: [
+    { v:100, type:'mc',
+      q:'An wen wendet sich ein Seller, wenn er einen Security-Lead identifiziert hat?',
+      a:['Direkt an den Account Manager bei Microsoft',
+         'Werkzeugbox – das zentrale Eingangstor für alle Anfragen',
+         'Telekom Sales Hotline',
+         'ISP-Direktleitung'],
+      c:1, ex:'Die Werkzeugbox ist für alle Anfragen – Security, Projekte, Incentives – der erste Anlaufpunkt.' },
+
+    { v:200, type:'mc',
+      q:'Welche zwei Formate bietet die Werkzeugbox für Dienstleistungsanfragen?',
+      a:['Sprint und Hackathon',
+         'Proof of Concept und Pilot',
+         'Orientierungsgespräch und Assessment',
+         'Workshop und Webinar'],
+      c:2, ex:'Orientierungsgespräch und Assessment sind die zwei Standardformate in der Werkzeugbox.' },
+
+    { v:300, type:'mc',
+      q:'Wer unterstützt den Seller bei Dienstleistungsanfragen in der Werkzeugbox?',
+      a:['Nur der Microsoft Account Manager',
+         'ISP (Interne Servicepartner) und MMS',
+         'Werkzeugbox ist self-service ohne Ansprechpartner',
+         'Der Telekom Vertriebsleiter'],
+      c:1, ex:'ISP und MMS sind die internen Ansprechpartner für Dienstleistungsanfragen in der Werkzeugbox.' },
+
+    { v:400, type:'mc',
+      q:'Was kostet ein interner Projekttag bei Telekom-Dienstleistungen?',
+      a:['960 €',
+         '2.200 €',
+         '800 €',
+         '1.480 €'],
+      c:3, ex:'Der interne Projekttag-Satz beträgt 1.480 € – wichtig für die Einschätzung von Projektaufwänden.' },
+
+    { v:500, type:'mc',
+      q:'Wie heißt das zentrale Cloud-Angebots-Tool bei Telekom, und wer hilft bei Kundenscreening?',
+      a:['SAP CRM · Ansprechpartner: Vertriebsleiter',
+         'Telekom Order Portal · Ansprechpartner: ISP',
+         'CAT (Cloud Angebots-Tool) · Kundenscreening: Matchpilot in der Werkzeugbox',
+         'Microsoft CPOR · Ansprechpartner: Microsoft direkt'],
+      c:2, ex:'CAT = Cloud Angebots-Tool; Matchpilot in der Werkzeugbox übernimmt das Kundenscreening.' },
+  ],
+};
+
+// ═══════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════
+let teamName='', board={}, earned={}, totalScore=0, peakScore=0;
+let okCount=0, badCount=0;
+let currentQ=null, wordState=null, scores=[];
+
+const SK='mw_jeopardy_v9';
+async function loadScores(){ try{ const r=await window.storage.get(SK,true); scores=r?JSON.parse(r.value):[]; }catch{ scores=[]; }}
+async function saveScores(){ try{ await window.storage.set(SK,JSON.stringify(scores),true); }catch{} }
+
+// ═══════════════════════════════════════════
+//  SCREENS
+// ═══════════════════════════════════════════
+function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on')); document.getElementById(id).classList.add('on'); }
+
+async function goStart(){
+  await loadScores(); renderLb('lb-start',null);
+  showScreen('s-start');
+  setTimeout(()=>document.getElementById('startName').focus(),300);
+}
+
+// ═══════════════════════════════════════════
+//  START GAME
+// ═══════════════════════════════════════════
+function startGame(){
+  const n=document.getElementById('startName').value.trim().toUpperCase();
+  if(!n){ document.getElementById('startName').focus(); return; }
+  teamName=n; board={}; earned={}; totalScore=0; peakScore=0; okCount=0; badCount=0;
+  CATS.forEach(c=>{ earned[c.id]=0; });
+  document.getElementById('hudTeam').textContent=n;
+  buildBoard(); updateHUD();
+  showScreen('s-game');
+}
+
+// ═══════════════════════════════════════════
+//  BOARD
+// ═══════════════════════════════════════════
+function buildBoard(){
+  const b=document.getElementById('board');
+  b.innerHTML='';
+  b.style.gridTemplateColumns=`repeat(${CATS.length},1fr)`;
+  CATS.forEach(cat=>{
+    const h=document.createElement('div');
+    h.className='cat-hdr';
+    h.textContent=cat.label;
+    b.appendChild(h);
+  });
+  VALS.forEach(val=>{
+    CATS.forEach(cat=>{
+      const key=cat.id+'_'+val;
+      const cell=document.createElement('div');
+      cell.className='cell'+(board[key]?' done':'');
+      cell.id='cell_'+key;
+      const v=document.createElement('div'); v.className='cell-val'; v.textContent=val+'€';
+      cell.appendChild(v);
+      if(!board[key]) cell.onclick=()=>openQ(cat,val);
+      b.appendChild(cell);
+    });
+  });
+}
+
+// ═══════════════════════════════════════════
+//  OPEN QUESTION
+// ═══════════════════════════════════════════
+function openQ(cat,val){
+  const q=QS[cat.id].find(x=>x.v===val); if(!q) return;
+  currentQ={cat,val,q};
+  document.getElementById('mCat').textContent=cat.label;
+  document.getElementById('mVal').textContent=val+' €';
+  document.getElementById('mQ').textContent=q.q;
+  document.getElementById('fb').className='fb';
+  document.getElementById('modalNext').style.display='none';
+  document.getElementById('zone-mc').style.display='none';
+  document.getElementById('zone-tf').style.display='none';
+  document.getElementById('zone-word').style.display='none';
+  if(q.type==='mc')   buildMC(q);
+  if(q.type==='tf')   buildTF();
+  if(q.type==='word') buildWord(q);
+  document.getElementById('overlay').classList.add('on');
+}
+
+function buildMC(q){
+  document.getElementById('zone-mc').style.display='';
+  const letters=['A','B','C','D'];
+  // Shuffle answers but track correct index
+  const opts=shuffle(q.a.map((a,i)=>({txt:a,orig:i})));
+  const grid=document.getElementById('aGrid');
+  grid.className='a-grid '+(q.a.length===2?'a-grid-2':'a-grid-4');
+  grid.innerHTML='';
+  opts.forEach((o,i)=>{
+    const b=document.createElement('button'); b.className='a-btn';
+    b.innerHTML=`<span class="a-key">${letters[i]}</span><span>${o.txt}</span>`;
+    b.onclick=()=>pickMC(o.orig===q.c, b, opts, q);
+    grid.appendChild(b);
+  });
+}
+
+function buildTF(){
+  document.getElementById('zone-tf').style.display='';
+  document.getElementById('tfT').className='tf-btn tf-t'; document.getElementById('tfT').disabled=false;
+  document.getElementById('tfF').className='tf-btn tf-f'; document.getElementById('tfF').disabled=false;
+}
+
+function buildWord(q){
+  document.getElementById('zone-word').style.display='';
+  wordState={word:q.word.toUpperCase(), revealed:new Set(), lives:6};
+  renderWordDisp(); buildAlpha(); document.getElementById('wLives').textContent=6;
+}
+
+// ═══════════════════════════════════════════
+//  ANSWER HANDLERS
+// ═══════════════════════════════════════════
+function pickMC(ok, btn, opts, q){
+  document.querySelectorAll('#aGrid .a-btn').forEach((b,i)=>{ b.disabled=true; if(opts[i]&&opts[i].orig===q.c) b.classList.add('ok'); });
+  if(ok) btn.classList.add('ok'); else btn.classList.add('bad');
+  handleResult(ok,q);
+}
+
+function pickTF(answer){
+  const q=currentQ.q;
+  const ok=(answer===q.correct);
+  document.getElementById('tfT').disabled=true; document.getElementById('tfF').disabled=true;
+  if(q.correct) document.getElementById('tfT').classList.add('ok'); else document.getElementById('tfF').classList.add('ok');
+  if(!ok)(answer?document.getElementById('tfT'):document.getElementById('tfF')).classList.add('bad');
+  handleResult(ok,q);
+}
+
+function guessLetter(ch){
+  if(!wordState||wordState.revealed.has(ch)) return;
+  const btn=document.getElementById('wl-'+ch);
+  if(wordState.word.includes(ch)){
+    wordState.revealed.add(ch); if(btn){btn.className='al-b al-h';btn.disabled=true;} renderWordDisp();
+    if(wordState.word.split('').every(c=>wordState.revealed.has(c))){
+      document.querySelectorAll('.al-b').forEach(b=>b.disabled=true);
+      handleResult(true,currentQ.q);
+    }
+  } else {
+    wordState.lives--; if(btn){btn.className='al-b al-m';btn.disabled=true;} document.getElementById('wLives').textContent=wordState.lives;
+    if(wordState.lives<=0){
+      wordState.word.split('').forEach(c=>wordState.revealed.add(c));
+      document.querySelectorAll('.al-b').forEach(b=>b.disabled=true);
+      renderWordDisp(); handleResult(false,currentQ.q);
+    }
+  }
+}
+
+function renderWordDisp(){
+  const d=document.getElementById('wDisp'); d.innerHTML='';
+  wordState.word.split('').forEach(ch=>{
+    const el=document.createElement('div');
+    if(ch===' '){ el.className='wl sp'; }
+    else { el.className='wl'+(wordState.revealed.has(ch)?' hit':''); el.textContent=wordState.revealed.has(ch)?ch:''; }
+    d.appendChild(el);
+  });
+}
+
+function buildAlpha(){
+  const g=document.getElementById('alphaWrap'); g.innerHTML='';
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(ch=>{
+    const b=document.createElement('button'); b.className='al-b'; b.id='wl-'+ch;
+    b.textContent=ch; b.onclick=()=>guessLetter(ch); g.appendChild(b);
+  });
+}
+
+// ═══════════════════════════════════════════
+//  RESULT HANDLER  – money added OR deducted
+// ═══════════════════════════════════════════
+function handleResult(ok, q){
+  const val=currentQ.val;
+  markDone(currentQ.cat.id, val);
+
+  if(ok){
+    okCount++;
+    totalScore+=val;
+    earned[currentQ.cat.id]=(earned[currentQ.cat.id]||0)+val;
+    if(totalScore>peakScore) peakScore=totalScore;
+    showFb(true, `+${val} € gutgeschrieben ✓ — ${q.ex}`);
+    popMoney(true, '+'+val+'€');
+  } else {
+    badCount++;
+    totalScore=Math.max(0, totalScore-val);
+    showFb(false, `-${val} € abgezogen ✗ — ${q.ex}`);
+    popMoney(false, '-'+val+'€');
+  }
+  updateHUD();
+  document.getElementById('modalNext').style.display='';
+  if(isBoardDone()) document.getElementById('modalNext').textContent='ERGEBNIS ⚓';
+  else document.getElementById('modalNext').textContent='WEITER ⚓';
+}
+
+function markDone(catId, val){
+  const key=catId+'_'+val; board[key]=true;
+  const cell=document.getElementById('cell_'+key);
+  if(cell){ cell.classList.add('done'); cell.onclick=null; }
+}
+
+function closeModal(){
+  document.getElementById('overlay').classList.remove('on');
+  currentQ=null; wordState=null;
+  if(isBoardDone()) showResult();
+}
+
+function isBoardDone(){ return CATS.every(cat=>VALS.every(v=>board[cat.id+'_'+v])); }
+function finishEarly(){ showResult(); }
+
+// ═══════════════════════════════════════════
+//  HUD
+// ═══════════════════════════════════════════
+function updateHUD(){
+  document.getElementById('hudScore').textContent=fmt(totalScore);
+  const pct=Math.min(totalScore/6000*100,100);
+  document.getElementById('progFill').style.width=pct+'%';
+  const pts=calcPoints(totalScore);
+  document.getElementById('progCur').textContent=`${fmt(totalScore)}  →  ${pts} Punkte`;
+}
+
+function calcPoints(s){
+  if(s>=6000) return 8;
+  if(s>=5250) return 7;
+  if(s>=4500) return 6;
+  if(s>=3750) return 5;
+  if(s>=3000) return 4;
+  if(s>=2000) return 3;
+  if(s>=1000) return 2;
+  if(s>=400)  return 1;
+  return 0;
+}
+
+// ═══════════════════════════════════════════
+//  FEEDBACK & FX
+// ═══════════════════════════════════════════
+function showFb(ok,txt){
+  const el=document.getElementById('fb');
+  el.className='fb on '+(ok?'ok':'bad');
+  document.getElementById('fbI').textContent=ok?'✓':'✗';
+  document.getElementById('fbT').textContent=txt;
+}
+
+function popMoney(win,txt){
+  const el=document.createElement('div');
+  el.className='money-pop '+(win?'win':'lose');
+  el.textContent=txt;
+  el.style.left=(25+Math.random()*50)+'%';
+  el.style.top='35%';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),1300);
+}
+
+// ═══════════════════════════════════════════
+//  RESULT SCREEN
+// ═══════════════════════════════════════════
+async function showResult(){
+  const pts=calcPoints(totalScore);
+  document.getElementById('rTitle').textContent = totalScore>=6000 ? '⭐ Ziel erreicht!' : totalScore>0 ? 'Gut gespielt!' : 'Besser nächstes Mal!';
+  document.getElementById('rAmount').textContent=fmt(totalScore);
+  document.getElementById('rGoal').textContent= totalScore>=6000 ? 'Ziel von 6.000 € erreicht ✓' : `Ziel war 6.000 € — ${fmt(6000-totalScore)} fehlen noch`;
+  const pb=document.getElementById('rPts');
+  pb.textContent=pts+' / 8 Punkte'+(pts===8?' ⭐':'');
+  pb.className='result-pts '+(pts>=8?'rp-full':pts>=5?'rp-good':'rp-low');
+  document.getElementById('rsOk').textContent=okCount;
+  document.getElementById('rsBad').textContent=badCount;
+  document.getElementById('rsMax').textContent=fmt(peakScore);
+
+  // Breakdown
+  const bd=document.getElementById('rBreakdown'); bd.innerHTML='';
+  const hdr=document.createElement('div');
+  hdr.style.cssText='font-size:9px;letter-spacing:4px;color:var(--text-dim);text-align:center;margin-bottom:12px;text-transform:uppercase;';
+  hdr.textContent='Ergebnis je Kategorie';
+  bd.appendChild(hdr);
+  CATS.forEach(cat=>{
+    const row=document.createElement('div'); row.className='bd-row';
+    row.innerHTML=`<span class="bd-cat">${cat.label}</span><span class="bd-val">${fmt(earned[cat.id]||0)}</span>`;
+    bd.appendChild(row);
+  });
+  const tot=document.createElement('div');
+  tot.style.cssText='display:flex;justify-content:space-between;padding:10px 14px;border-top:2px solid rgba(200,148,58,.3);margin-top:4px;';
+  tot.innerHTML=`<span style="color:var(--brass2);font-family:var(--ff-hud);font-size:11px;">GESAMT</span><span style="font-family:var(--ff-hud);font-size:15px;color:var(--brass2);">${fmt(totalScore)}</span>`;
+  bd.appendChild(tot);
+
+  document.getElementById('resultName').value=teamName;
+  document.getElementById('resultName').disabled=false;
+  document.querySelector('#s-result .btn-brass').disabled=false;
+  document.querySelector('#s-result .btn-brass').textContent='OK ▶';
+  await loadScores(); renderLb('lb-result',null);
+  showScreen('s-result');
+}
+
+async function submitScore(){
+  const name=document.getElementById('resultName').value.trim().toUpperCase();
+  if(!name) return;
+  const pts=calcPoints(totalScore);
+  await loadScores();
+  scores.push({name, score:totalScore, pts, ok:okCount, bad:badCount, ts:Date.now()});
+  scores.sort((a,b)=>b.score-a.score);
+  if(scores.length>50) scores=scores.slice(0,50);
+  await saveScores();
+  document.getElementById('resultName').disabled=true;
+  document.querySelector('#s-result .btn-brass').disabled=true;
+  document.querySelector('#s-result .btn-brass').textContent='✓ Gespeichert';
+  renderLb('lb-result',name);
+}
+
+// ═══════════════════════════════════════════
+//  LEADERBOARD
+// ═══════════════════════════════════════════
+const MEDALS=['🥇','🥈','🥉'];
+function renderLb(id,highlight){
+  const el=document.getElementById(id); if(!el) return;
+  if(!scores.length){ el.innerHTML='<div class="lb-empty">Noch keine Einträge – seid die Ersten!</div>'; return; }
+  const top=scores[0].score||1;
+  el.innerHTML=scores.map((s,i)=>{
+    const cls=i===0?'g1':i===1?'g2':i===2?'g3':'';
+    const medal=i<3?MEDALS[i]:(i+1)+'.';
+    const bar=Math.round(s.score/top*100);
+    const isNew=s.name===highlight;
+    return `<div class="lb-row ${cls} ${isNew?'new':''}">
+      <div class="lb-pos">${medal}</div>
+      <div><div class="lb-name">${s.name}</div>
+      <div class="lb-meta">${fmt(s.score)} · ${s.pts}/8 Punkte · ${s.ok}✓ ${s.bad}✗ · ${new Date(s.ts).toLocaleDateString('de-DE')}</div></div>
+      <div class="lb-sc">${fmt(s.score)}</div>
+      <div class="lb-bar" style="width:${bar}%"></div>
+    </div>`;
+  }).join('');
+}
+
+async function clearHall(){
+  if(!confirm('Alle Scores löschen?')) return;
+  scores=[]; try{ await window.storage.delete(SK,true); }catch{}
+  renderLb('lb-start',null);
+}
+
+// ═══════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════
+function fmt(n){ return n.toLocaleString('de-DE')+'€'; }
+function shuffle(a){ return [...a].sort(()=>Math.random()-.5); }
+
+// INIT
+goStart();
+</script>
+</body>
+</html>
